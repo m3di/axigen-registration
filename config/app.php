@@ -77,7 +77,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'fa',
 
     /*
     |--------------------------------------------------------------------------
@@ -166,6 +166,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
         Laravel\Tinker\TinkerServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         GrahamCampbell\HTMLMin\HTMLMinServiceProvider::class,
