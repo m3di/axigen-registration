@@ -1,0 +1,21 @@
+{
+  "name": "public",
+  "homepage": "https://github.com/m3di/axigen-registration",
+  "authors": [
+    "m3hdi <mohamad-mehdi@live.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "pwstrength-bootstrap": "^2.1.1"
+  }
+}
