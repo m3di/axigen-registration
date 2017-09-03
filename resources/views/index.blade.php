@@ -1,18 +1,19 @@
 @extends('layouts.app')
 
+@prepend('html-scripts')
+<script type="text/javascript" src="/bower_components/pwstrength-bootstrap/dist/pwstrength-bootstrap.min.js"></script>
+@endprepend
+
 @section('app-content')
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <h2 class="text-center" id="page-header">
+                <h4 class="text-center" id="page-header">
                     <img src="/resources/images/razi-logo.png" alt="" class="center-block">
-                </h2>
+                    <span>درگاه ثبت درخواست ایجاد ایمیل دانشجویان و اساتید دانشگاه رازی</span>
+                </h4>
                 <div class="panel with-nav-tabs panel-default">
                     <div class="panel-heading">
-                        <div class="text-center" id="reg-panel-header">
-                            <h4>درگاه ثبت درخواست ایجاد ایمیل دانشجویان و اساتید دانشگاه رازی</h4>
-                        </div>
-
                         <ul class="nav nav-tabs nav-justified" id="tabs">
                             <li class="active"><a href="#tab1" data-toggle="tab">دانشجویان کارشناسی</a></li>
                             <li><a href="#tab2" data-toggle="tab">دانشجویان تحصیلات تکمیلی</a></li>
@@ -20,58 +21,56 @@
                         </ul>
                     </div>
                     <div class="panel-body">
-                        <div class="tab-content">
-                            <div class="tab-pane fade in active student-info" id="tab1">
-                                {!! BootForm::open() !!}
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <div class="tab-content">
+                                    <div class="tab-pane fade in active student-info" id="tab1">
+                                        {!! BootForm::open(['data-domain' => ($domain = 'razi.ac.ir'), 'url' => route('request', $domain)]) !!}
 
-                                {!! BootForm::hidden('g-recaptcha-response') !!}
+                                        {!! BootForm::hidden('g-recaptcha-response') !!}
 
-                                {!! BootForm::text('name', 'نام و نام خانوادگی') !!}
+                                        {!! BootForm::text('name', 'نام و نام خانوادگی') !!}
 
-                                {!! BootForm::number('sid', 'شماره دانشجویی') !!}
+                                        {!! BootForm::number('sid', 'شماره دانشجویی') !!}
 
-                                {!! BootForm::tel('tel', 'شماره همراه') !!}
+                                        {!! BootForm::tel('tel', 'شماره همراه') !!}
 
-                                {!! BootForm::checkbox('terms', new \Illuminate\Support\HtmlString('ضمن مطالعه دقیق '.'<a href="#">قوانین</a>'.' و '.'<a href="#">شرایط</a>'.'، با همه موارد موافقم')) !!}
+                                        <div class="form-group{{ $errors->has('mail') ? ' has-error' : '' }}">
+                                            <label for="mail" class="control-label">آدرس درخواستی</label>
 
-                                {!! BootForm::submit('ثبت درخواست') !!}
+                                            <div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon" dir="ltr">@razi.ac.ir</span>
+                                                    {!! Form::text('mail', null, ['id' => 'mail','dir' => 'ltr', 'required', 'class' => 'form-control loading-right mail-check']) !!}
+                                                    {{--<input id="mail" name="mail" type="text" dir="ltr" required--}}
+                                                           {{--class="form-control loading-right mail-check"/>--}}
+                                                </div>
 
-                                {!! BootForm::close() !!}
-                            </div>
-                            <div class="tab-pane fade student-info" id="tab2">
-                                <form id="register-form" action="https://phpoll.com/register/process"
-                                      method="post" role="form">
-                                    <div class="form-group">
-                                        <input type="text" name="username" id="username" tabindex="1"
-                                               class="form-control" placeholder="Username" value="">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="email" name="email" id="email" tabindex="1"
-                                               class="form-control" placeholder="Email Address" value="">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="password" name="password" id="password" tabindex="2"
-                                               class="form-control" placeholder="Password">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="password" name="confirm-password" id="confirm-password"
-                                               tabindex="2" class="form-control"
-                                               placeholder="Confirm Password">
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-sm-6 col-sm-offset-3">
-                                                <input type="submit" name="register-submit"
-                                                       id="register-submit" tabindex="4"
-                                                       class="form-control btn btn-register"
-                                                       value="Register Now">
+                                                <span class="help-block">
+                                                    @if ($errors->has('mail'))
+                                                        <strong>{{ $errors->first('mail') }}</strong>
+                                                    @endif
+                                                </span>
                                             </div>
                                         </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="tab-pane fade student-info" id="tab3">
 
+                                        {!! BootForm::password('password', 'کلمه عبور', ['required']) !!}
+
+                                        {!! BootForm::password('password_confirmation', 'تکرار کلمه عبور', ['required']) !!}
+
+                                        {!! BootForm::checkbox('terms', new \Illuminate\Support\HtmlString('ضمن مطالعه دقیق '.'<a href="#">قوانین</a>'.' و '.'<a href="#">شرایط</a>'.'، با همه موارد موافقم')) !!}
+
+                                        {!! BootForm::submit('ثبت درخواست') !!}
+
+                                        {!! BootForm::close() !!}
+                                    </div>
+                                    <div class="tab-pane fade student-info" id="tab2">
+
+                                    </div>
+                                    <div class="tab-pane fade student-info" id="tab3">
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -100,8 +99,10 @@
     </div>
 
     <script>
+        var xhr = null, mailInput, mailInputGroup, mailHelper, tabs = null, reservedForm = null, c_token = null;
+
         $(function () {
-            var tabs = $('#tabs');
+            tabs = $('#tabs');
 
             tabs.find('a').click(function (e) {
                 e.preventDefault();
@@ -118,9 +119,77 @@
                 var hash = window.location.hash || '#!tab1';
                 tabs.find('a[href="' + hash.replace(/^#!/, '#') + '"]').tab('show');
             }).trigger('hashchange');
+
+            $('#password').pwstrength({
+                rules: {
+                    activated: {
+                        wordTwoCharacterClasses: true,
+                        wordRepetitions: true
+                    }
+                },
+                i18n: {
+                    fa: {
+                        "wordMinLength": "گذرواژه شما خیلی کوتاه است",
+                        "wordMaxLength": "گذرواژه شما خیلی طولانی است",
+                        "wordInvalidChar": "رمز عبور شما دارای یک کاراکتر نامعتبر است",
+                        "wordNotEmail": "از ایمیل خود به عنوان رمز عبور خود استفاده نکنید",
+                        "wordSimilarToUsername": "رمز عبور شما نمیتواند نام کاربری شما را داشته باشد",
+                        "wordTwoCharacterClasses": "از انواع کاراکتر های مختلف استفاده کنید",
+                        "wordRepetitions": "بیش از حد تکراری",
+                        "wordSequences": "رمز عبور شما حاوی توالی است",
+                        "errorList": "خطاها:",
+                        "veryWeak": "خیلی ضعیف",
+                        "weak": "ضعیف",
+                        "normal": "طبیعی",
+                        "medium": "متوسط",
+                        "strong": "قوی",
+                        "veryStrong": "بسیار قوی"
+                    },
+                    t: function (key) {
+                        return this.fa[key];
+                    }
+                }
+            });
+
+            $('.mail-check').on('input', function () {
+                mailInput = $(this);
+                mailInputGroup = mailInput.parents('.form-group');
+                mailHelper = mailInputGroup.find('.help-block');
+                var text = mailInput.val();
+
+                xhr === null || xhr.abort();
+                if (text.length) {
+                    mailInput.addClass('loading');
+                    xhr = $.ajax({
+                        method: 'get',
+                        dataType: 'json',
+                        url: '{{ route('validate_email', '__domain__') }}'.replace('__domain__', mailInputGroup.parents('form').attr('data-domain')),
+                        data: {id: text},
+                        complete: function () {
+                            mailInput.removeClass('loading');
+                        },
+                        success: function (data) {
+                            if (data.accepted) {
+                                mailInput[0].setCustomValidity("");
+                                mailInputGroup.removeClass('has-error');
+                                mailInputGroup.addClass('has-success');
+                                mailHelper.html('');
+                            } else {
+                                mailInput[0].setCustomValidity("ایمیل درخواستی معتبر نیست");
+                                mailInputGroup.removeClass('has-success');
+                                mailInputGroup.addClass('has-error');
+                                mailHelper.html(data.message);
+                            }
+                        }
+                    });
+                } else {
+                    mailInput.removeClass('loading');
+                    mailInputGroup.removeClass('has-error');
+                    mailHelper.html('');
+                }
+            })
         });
 
-        var reservedForm = null, c_token = null;
         $('form').submit(function (e) {
             if (c_token === null) {
                 e.preventDefault();
