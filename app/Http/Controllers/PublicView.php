@@ -10,7 +10,9 @@ class PublicView extends Controller
         return view('index');
     }
 
-    function validateUsername() {
+    function validateUsername(Request $request, $domain) {
+        $domain = "localdomain";
+
         $validate = validator(
             request()->only(['id']),
             [
@@ -26,9 +28,43 @@ class PublicView extends Controller
                 'message' => '<ul>'.implode('',$validate->getMessageBag()->all('<li>:message</li>')).'</ul>',
             ];
         } else {
-            return [
-                'accepted' => true,
-            ];
+            $command = implode(" ", array_map(function($a){
+                return '"'.addslashes($a).'"';
+            }, [
+                env("python.path"),
+                app_path("Axigen/verify-email.py"),
+                \request('id')."@".$domain,
+                env("cli.user"),
+                env("cli.pass"),
+                env("cli.host").":".env("cli.port"),
+            ]));
+
+            exec($command, $dump, $response);
+
+            if ($response == 2) {
+                return [
+                    'accepted' => true,
+                ];
+            } else {
+                switch ($response) {
+                    case 0:
+                        $message = "آدرس درخواستی قبلا به ثبت رسیده است.";
+                        break;
+                    case 1:
+                        $message = "نام دامنه نامعتبر است.";
+                        break;
+                    case 3:
+                        $message = "خطا در برقراری ارتباط با سرور.";
+                        break;
+                    default:
+                        $message = "خطای ناشناخته.";
+                        break;
+                }
+                return [
+                    'accepted' => false,
+                    'message' => $message,
+                ];
+            }
         }
     }
 

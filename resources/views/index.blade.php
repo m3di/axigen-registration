@@ -42,8 +42,6 @@
                                                 <div class="input-group">
                                                     <span class="input-group-addon" dir="ltr">@razi.ac.ir</span>
                                                     {!! Form::text('mail', null, ['id' => 'mail','dir' => 'ltr', 'required', 'class' => 'form-control loading-right mail-check']) !!}
-                                                    {{--<input id="mail" name="mail" type="text" dir="ltr" required--}}
-                                                           {{--class="form-control loading-right mail-check"/>--}}
                                                 </div>
 
                                                 <span class="help-block">
